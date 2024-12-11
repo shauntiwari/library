@@ -1,9 +1,80 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
 *, *::before, *::after {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+/* End Josh Comeau's CSS Reset */
+
+* {
+    --background-books: lightblue;
 }
 
 #container {
-    margin: 20px;
+    margin: 20px 100px;
+    padding: 20px 50px;
+    width: 1000px;
+    border: solid 1px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.bookCard {
+    width: 300px;
+    height: 200px;
+    padding: 20px;
+    border: solid 1px;
+    border-radius: 5px;
+    background-color: var(--background-books);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.2rem;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.bookCardButtons {
+    display: flex;
+    justify-content: space-between;
 }

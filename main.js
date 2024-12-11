@@ -21,7 +21,7 @@ function displayBooks(){
         const readStatus = myLibrary[i].read ? "read" : "unread";
         bookDiv.textContent = `${myLibrary[i].title} | ${myLibrary[i].author} | ${myLibrary[i].pages} pages | ${readStatus}`;
         bookDiv.id = `item ${i}`;
-        document.getElementById("container").appendChild(bookDiv);
+        document.getElementById("libraryStart").appendChild(bookDiv);
     }
 }
 
@@ -34,5 +34,13 @@ addBookToLibrary('Book4', 'Author4', 240, true);
 displayBooks();
 
 // Test for removing an item, logic to be used when creating delete buttons
-const delDiv = document.getElementById('item 2');
-delDiv.remove();
+// document.getElementById('item 2').remove();
+
+
+function deleteBookFromLibrary(){
+
+}
+
+function toggleReadOrNot() {
+    
+}

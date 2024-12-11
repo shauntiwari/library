@@ -10,8 +10,9 @@
 
 <body>
     <main id="container">
-        <button>Add Book</button>
-        <form action="submit">
+        <h1>My Library</h1>
+        <br><hr><br>
+        <form action="submit" id="inputArea">
             <div>
                 <input type="text">
                 <label for="">Title</label>
@@ -28,8 +29,23 @@
                 <input type="text">
                 <label for="">Read?</label>
             </div>
+            <button>Add Book</button>
         </form>
+        <br><hr><br>
+        <div id="libraryStart">
+            <div class="bookCard">
+                <h4 class="title">The Return of the King</h4>
+                <p class="author">J.R.R. Tolkien</p>
+                <p class="pages">256 pages</p>
+                <p class="readOrNot">Not Read</p>
+                <button>Delete</button>
+                <button>Toggle Un/Read</button>
+            </div>
+        </div>
+
     </main>
 </body>
+
+
 
 </html>
