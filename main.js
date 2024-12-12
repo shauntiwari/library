@@ -15,10 +15,12 @@ function addBookToLibrary(title, author, pages, read){
 }
 
 function displayBooks(){
-    //loops through the myLibrary array and displays each book on the page
-    for(let i = 0; i < myLibrary.length; i++){
+    
+    for(let i = 0; i < myLibrary.length; i++){    
+        //create all needed elements for each book card along with class names and text within
         const bookCard = document.createElement("div");
         bookCard.className = "bookCard";
+        bookCard.id = `item ${i}`; //set id for each new book card to be used when deleting
         
         const bookData = document.createElement("div");
         bookData.className = "bookData";
@@ -46,43 +48,55 @@ function displayBooks(){
         const bookButtonsToggle = document.createElement("button");
         bookButtonsToggle.className = "toggleRead";
         bookButtonsToggle.textContent = "Toggle Un/Read";
+        bookButtonsToggle.onclick = toggleReadOrNot;
         
         const bookButtonsDelete = document.createElement("button");
         bookButtonsDelete.className = "delete";
         bookButtonsDelete.textContent = "Delete";
+        bookButtonsDelete.onclick = deleteBookFromLibrary;
 
         // append divs now
         bookData.appendChild(bookDataTitle);
         bookData.appendChild(bookDataAuthor);
         bookData.appendChild(bookDataPages);
         bookData.appendChild(bookDataRead);
-
         bookButtons.appendChild(bookButtonsToggle);
         bookButtons.appendChild(bookButtonsDelete);
-
         bookCard.appendChild(bookData);
         bookCard.appendChild(bookButtons);
-        bookCard.id = `item ${i}`;
         document.getElementById("libraryStart").appendChild(bookCard);
     }
 }
 
 // Test logic by adding some books to array, then display the books
+addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
 addBookToLibrary('Book1', 'Author1', 200, true);
 addBookToLibrary('Book2', 'Author2', 300, false);
 addBookToLibrary('Book3', 'Author3', 160, false);
 addBookToLibrary('Book4', 'Author4', 240, true);
+addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
+addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
+addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
 
 displayBooks();
 
-// Test for removing an item, logic to be used when creating delete buttons
-// document.getElementById('item 2').remove();
+function deleteBookFromLibrary() {
+    const cardToDelete = this.closest('.bookCard');
+    const cardDeleteID = cardToDelete.id;
+    const index = parseInt(cardDeleteID.split(' ')[1]);
 
-
-function deleteBookFromLibrary(){
-
+    myLibrary.splice(index, 1);
+    cardToDelete.remove();
 }
 
 function toggleReadOrNot() {
+    const cardToUpdate = this.closest('.bookCard');
+    const cardUpdateID = cardToUpdate.id;
+    const index = parseInt(cardUpdateID.split(' ')[1]);
+    
+    //toggle/flip the boolean in the array
+    myLibrary[index].read = !myLibrary[index].read;
 
+    const toggleToUpdate = cardToUpdate.querySelector('.readOrNot');
+    toggleToUpdate.textContent = myLibrary[index].read ? "Read" : "Not Read";
 }

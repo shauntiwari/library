@@ -102,7 +102,6 @@ button {
 }
 
 .bookButtons > button {
-    background-color: darkgray;
     color: white;
     font-size: 0.9rem;
 }
