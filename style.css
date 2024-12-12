@@ -37,35 +37,57 @@ p, h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
-/* End Josh Comeau's CSS Reset */
+/* End Josh Comeau's CSS Reset, my CSS below */
 
 * {
-    --background-books: lightblue;
+    --container-bgcolor: #faf4ed;
+    --background-books: #ffffff;
+    --delete-button: hsl(355, 78%, 56%);
+    --delete-button-hover: hsl(355, 78%, 46%);
+    --toggle-button:hsl(122, 39%, 49%);
+    --toggle-button-hover:hsl(122, 39%, 39%); 
 }
 
 #container {
     margin: 20px 100px;
     padding: 20px 50px;
-    width: 1000px;
+    width: 1100px;
     border: solid 1px;
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 5px;
+    background-color: var(--container-bgcolor);
 }
 
 h1 {
     text-align: center;
 }
 
+button {
+    border-radius: 5px;
+    border: none;
+}
+
+#libraryStart {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .bookCard {
     width: 300px;
-    height: 200px;
+    height: 250px;
     padding: 20px;
-    border: solid 1px;
+    margin: 15px;
     border-radius: 5px;
+    border: solid 1px;
+    box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 50%);
     background-color: var(--background-books);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.bookCard:hover {
+    box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 50%);
 }
 
 .title {
@@ -74,7 +96,33 @@ h1 {
     padding-bottom: 10px;
 }
 
-.bookCardButtons {
+.bookButtons {
     display: flex;
     justify-content: space-between;
+}
+
+.bookButtons > button {
+    background-color: darkgray;
+    color: white;
+    font-size: 0.9rem;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button.delete {
+    background-color: var(--delete-button);
+}
+
+button.delete:hover {
+    background-color: var(--delete-button-hover);
+}
+
+button.toggleRead {
+    background-color: var(--toggle-button);
+}
+
+button.toggleRead:hover {
+    background-color: var(--toggle-button-hover);
 }
