@@ -45,7 +45,9 @@ p, h1, h2, h3, h4, h5, h6 {
     --delete-button: hsl(355, 78%, 56%);
     --delete-button-hover: hsl(355, 78%, 46%);
     --toggle-button:hsl(122, 39%, 49%);
-    --toggle-button-hover:hsl(122, 39%, 39%); 
+    --toggle-button-hover:hsl(122, 39%, 39%);
+    --show-form-button: hsl(0, 0%, 31%);
+    --show-form-button-hover: hsl(0, 0%, 21%); 
 }
 
 #container {
@@ -58,6 +60,12 @@ p, h1, h2, h3, h4, h5, h6 {
     background-color: var(--container-bgcolor);
 }
 
+#topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 h1 {
     text-align: center;
 }
@@ -67,6 +75,88 @@ button {
     border: none;
 }
 
+#showFormBtn {
+  height: fit-content;
+  padding: 8px 16px;
+}
+
+/* Form styling */
+#inputArea {
+  flex-grow: 1;
+  margin-left: 20px;
+  padding: 20px;
+  background-color: var(--background-books);  /* white background like cards */
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 20%);
+}
+
+#inputArea div {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+#inputArea input[type="text"],
+#inputArea input[type="number"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+}
+
+#inputArea input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+#inputArea label {
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Make the checkbox and its label appear on same line */
+#inputArea div:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Form buttons */
+#inputArea button {
+  padding: 8px 16px;
+  margin-right: 10px;
+  color: white;
+  font-size: 0.8rem;
+}
+
+#inputArea button[type="submit"] {
+  background-color: var(--toggle-button);
+}
+
+#inputArea button[type="submit"]:hover {
+  background-color: var(--toggle-button-hover);
+}
+
+#inputArea #cancelBtn {
+  background-color: var(--delete-button);
+}
+
+#inputArea #cancelBtn:hover {
+  background-color: var(--delete-button-hover);
+}
+
+/* Add Book button styling */
+#showFormBtn {
+  height: fit-content;
+  padding: 8px 16px;
+  background-color: var(--show-form-button);
+  color: white;
+}
+
+#showFormBtn:hover {
+  background-color: var(--show-form-button-hover);
+}
+
 #libraryStart {
     display: flex;
     flex-wrap: wrap;
@@ -74,7 +164,7 @@ button {
 
 .bookCard {
     width: 300px;
-    height: 250px;
+    height: 220px;
     padding: 20px;
     margin: 15px;
     border-radius: 5px;

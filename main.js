@@ -14,7 +14,44 @@ function addBookToLibrary(title, author, pages, read){
     myLibrary.push(bookToAdd);
 }
 
-function displayBooks(){
+// Get DOM elements
+const showFormBtn = document.getElementById('showFormBtn');
+const inputArea = document.getElementById('inputArea');
+const cancelBtn = document.getElementById('cancelBtn');
+
+// Show/hide form
+showFormBtn.onclick = () => inputArea.style.display = 'block';
+cancelBtn.onclick = () => inputArea.style.display = 'none';
+
+// function for form submission when adding a book
+function addBook(e) {
+    e.preventDefault();
+    
+    // Get values from form
+    const title = document.getElementById('titleInput').value;
+    const author = document.getElementById('authorInput').value;
+    const pages = document.getElementById('pagesInput').value;
+    const read = document.getElementById('readInput').checked;
+    
+    // Add new book
+    addBookToLibrary(title, author, pages, read);
+    
+    // Clear form
+    inputArea.reset();
+    
+    // Hide form
+    // inputArea.style.display = 'none';
+    
+    // Refresh display
+    document.getElementById('libraryStart').innerHTML = '';
+    displayBooks();
+}
+
+// event listener for form submission
+inputArea.onsubmit = addBook;
+
+
+function displayBooks() {
     
     for(let i = 0; i < myLibrary.length; i++){    
         //create all needed elements for each book card along with class names and text within
@@ -68,15 +105,15 @@ function displayBooks(){
     }
 }
 
-// Test logic by adding some books to array, then display the books
-addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
-addBookToLibrary('Book1', 'Author1', 200, true);
-addBookToLibrary('Book2', 'Author2', 300, false);
-addBookToLibrary('Book3', 'Author3', 160, false);
-addBookToLibrary('Book4', 'Author4', 240, true);
-addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
-addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
-addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', 640, true);
+// Test logic by adding initial books to array, then display the books
+addBookToLibrary("The Fellowship of the Ring", "J.R.R. Tolkien", 432, true);
+addBookToLibrary("A Game of Thrones", "George R.R. Martin", 835, true);
+addBookToLibrary("Life of Pi", "Yann Martel", 460, false);
+addBookToLibrary("The Handmaid's Tale", "Margaret Atwood", 311, false);
+addBookToLibrary("Animal Farm", "George Orwell", 141, true);
+addBookToLibrary("Atlas Shrugged", "Ayn Rand", 1168, false);
+addBookToLibrary("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 333, true);
+addBookToLibrary("Ender's Game", "Orson Scott Card", 324, false);
 
 displayBooks();
 
