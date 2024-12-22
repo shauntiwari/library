@@ -1,63 +1,89 @@
-const myLibrary = [];
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 
-function Book(title, author, pages, read){
-    //the Book object constructor
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+    toggleRead() {
+        this.read = !this.read;
+        return this.read;
+    }
 }
 
-function addBookToLibrary(title, author, pages, read){
-    //add one or more Books to the myLibrary array
-    const bookToAdd = new Book(title, author, pages, read);
-    myLibrary.push(bookToAdd);
+class Library {
+    constructor() {
+        this.books = [];
+    }
+
+    addBook(title, author, pages, read) {
+        const book = new Book(title, author, pages, read);
+        this.books.push(book);
+        return book;
+    }
+
+    deleteBook(index) {
+        if (index >= 0 && index < this.books.length) {
+            this.books.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+
+    getBook(index) {
+        return (index >= 0 && index < this.books.length) ? this.books[index] : null;
+    }
+
+    getAllBooks() {
+        return this.books;
+    }
 }
 
-// Get DOM elements
-const showFormBtn = document.getElementById('showFormBtn');
-const inputArea = document.getElementById('inputArea');
-const cancelBtn = document.getElementById('cancelBtn');
+class LibraryUI {
+    constructor(library) {
+        this.library = library;
+        this.showFormBtn = document.getElementById('showFormBtn');
+        this.inputArea = document.getElementById('inputArea');
+        this.cancelBtn = document.getElementById('cancelBtn');
+        this.libraryContainer = document.getElementById('libraryStart');
+        
+        this.initializeEventListeners();
+    }
 
-// Show/hide form
-showFormBtn.onclick = () => inputArea.style.display = 'block';
-cancelBtn.onclick = () => inputArea.style.display = 'none';
+    initializeEventListeners() {
+        // Form display controls
+        this.showFormBtn.addEventListener('click', () => this.showForm());
+        this.cancelBtn.addEventListener('click', () => this.hideForm());
+        this.inputArea.addEventListener('submit', (e) => this.handleBookSubmission(e));
+    }
 
-// function for form submission when adding a book
-function addBook(e) {
-    e.preventDefault();
-    
-    // Get values from form
-    const title = document.getElementById('titleInput').value;
-    const author = document.getElementById('authorInput').value;
-    const pages = document.getElementById('pagesInput').value;
-    const read = document.getElementById('readInput').checked;
-    
-    // Add new book
-    addBookToLibrary(title, author, pages, read);
-    
-    // Clear form
-    inputArea.reset();
-    
-    // Hide form
-    // inputArea.style.display = 'none';
-    
-    // Refresh display
-    document.getElementById('libraryStart').innerHTML = '';
-    displayBooks();
-}
+    showForm() {
+        this.inputArea.style.display = 'block';
+    }
 
-// event listener for form submission
-inputArea.onsubmit = addBook;
+    hideForm() {
+        this.inputArea.style.display = 'none';
+    }
 
+    handleBookSubmission(e) {
+        e.preventDefault();
+        
+        const title = document.getElementById('titleInput').value;
+        const author = document.getElementById('authorInput').value;
+        const pages = document.getElementById('pagesInput').value;
+        const read = document.getElementById('readInput').checked;
+        
+        this.library.addBook(title, author, pages, read);
+        
+        this.inputArea.reset();
+        this.displayBooks();
+    }
 
-function displayBooks() {
-    
-    for(let i = 0; i < myLibrary.length; i++){    
-        //create all needed elements for each book card along with class names and text within
+    createBookCard(book, index) {
         const bookCard = document.createElement("div");
         bookCard.className = "bookCard";
-        bookCard.id = `item ${i}`; //set id for each new book card to be used when deleting
+        bookCard.id = `item ${index}`;
         
         const bookData = document.createElement("div");
         bookData.className = "bookData";
@@ -65,75 +91,80 @@ function displayBooks() {
         const bookButtons = document.createElement("div");
         bookButtons.className = "bookButtons";
         
-        const bookDataTitle = document.createElement("h4");
-        bookDataTitle.className = "title";
-        bookDataTitle.textContent = myLibrary[i].title;
-
-        const bookDataAuthor = document.createElement("p");
-        bookDataAuthor.className = "author";
-        bookDataAuthor.textContent = myLibrary[i].author;
+        // Book information elements
+        const elements = {
+            title: this.createElement("h4", "title", book.title),
+            author: this.createElement("p", "author", book.author),
+            pages: this.createElement("p", "pages", `${book.pages} pages`),
+            read: this.createElement("p", "readOrNot", book.read ? "Read" : "Not Read")
+        };
         
-        const bookDataPages = document.createElement("p");
-        bookDataPages.className = "pages";
-        bookDataPages.textContent = `${myLibrary[i].pages} pages`;
-
-        const bookDataRead = document.createElement("p");
-        bookDataRead.className = "readOrNot";
-        const readStatus = myLibrary[i].read ? "Read" : "Not Read";
-        bookDataRead.textContent = readStatus;
+        // Buttons
+        const toggleBtn = this.createElement("button", "toggleRead", "Toggle Un/Read");
+        toggleBtn.addEventListener('click', () => this.handleToggleRead(index, elements.read));
         
-        const bookButtonsToggle = document.createElement("button");
-        bookButtonsToggle.className = "toggleRead";
-        bookButtonsToggle.textContent = "Toggle Un/Read";
-        bookButtonsToggle.onclick = toggleReadOrNot;
+        const deleteBtn = this.createElement("button", "delete", "Delete");
+        deleteBtn.addEventListener('click', () => this.handleDelete(index));
         
-        const bookButtonsDelete = document.createElement("button");
-        bookButtonsDelete.className = "delete";
-        bookButtonsDelete.textContent = "Delete";
-        bookButtonsDelete.onclick = deleteBookFromLibrary;
+        // Append elements
+        Object.values(elements).forEach(element => bookData.appendChild(element));
+        bookButtons.append(toggleBtn, deleteBtn);
+        bookCard.append(bookData, bookButtons);
+        
+        return bookCard;
+    }
 
-        // append divs now
-        bookData.appendChild(bookDataTitle);
-        bookData.appendChild(bookDataAuthor);
-        bookData.appendChild(bookDataPages);
-        bookData.appendChild(bookDataRead);
-        bookButtons.appendChild(bookButtonsToggle);
-        bookButtons.appendChild(bookButtonsDelete);
-        bookCard.appendChild(bookData);
-        bookCard.appendChild(bookButtons);
-        document.getElementById("libraryStart").appendChild(bookCard);
+    createElement(type, className, textContent) {
+        const element = document.createElement(type);
+        element.className = className;
+        element.textContent = textContent;
+        return element;
+    }
+
+    handleToggleRead(index, readElement) {
+        const book = this.library.getBook(index);
+        if (book) {
+            book.toggleRead();
+            readElement.textContent = book.read ? "Read" : "Not Read";
+        }
+    }
+
+    handleDelete(index) {
+        if (this.library.deleteBook(index)) {
+            this.displayBooks();
+        }
+    }
+
+    displayBooks() {
+        this.libraryContainer.innerHTML = '';
+        const books = this.library.getAllBooks();
+        books.forEach((book, index) => {
+            const bookCard = this.createBookCard(book, index);
+            this.libraryContainer.appendChild(bookCard);
+        });
+    }
+
+    addInitialBooks() {
+        const initialBooks = [
+            ["The Fellowship of the Ring", "J.R.R. Tolkien", 432, true],
+            ["A Game of Thrones", "George R.R. Martin", 835, true],
+            ["Life of Pi", "Yann Martel", 460, false],
+            ["The Handmaid's Tale", "Margaret Atwood", 311, false],
+            ["Animal Farm", "George Orwell", 141, true],
+            ["Atlas Shrugged", "Ayn Rand", 1168, false],
+            ["Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 333, true],
+            ["Ender's Game", "Orson Scott Card", 324, false]
+        ];
+
+        initialBooks.forEach(([title, author, pages, read]) => {
+            this.library.addBook(title, author, pages, read);
+        });
+        
+        this.displayBooks();
     }
 }
 
-// Test logic by adding initial books to array, then display the books
-addBookToLibrary("The Fellowship of the Ring", "J.R.R. Tolkien", 432, true);
-addBookToLibrary("A Game of Thrones", "George R.R. Martin", 835, true);
-addBookToLibrary("Life of Pi", "Yann Martel", 460, false);
-addBookToLibrary("The Handmaid's Tale", "Margaret Atwood", 311, false);
-addBookToLibrary("Animal Farm", "George Orwell", 141, true);
-addBookToLibrary("Atlas Shrugged", "Ayn Rand", 1168, false);
-addBookToLibrary("Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 333, true);
-addBookToLibrary("Ender's Game", "Orson Scott Card", 324, false);
-
-displayBooks();
-
-function deleteBookFromLibrary() {
-    const cardToDelete = this.closest('.bookCard');
-    const cardDeleteID = cardToDelete.id;
-    const index = parseInt(cardDeleteID.split(' ')[1]);
-
-    myLibrary.splice(index, 1);
-    cardToDelete.remove();
-}
-
-function toggleReadOrNot() {
-    const cardToUpdate = this.closest('.bookCard');
-    const cardUpdateID = cardToUpdate.id;
-    const index = parseInt(cardUpdateID.split(' ')[1]);
-    
-    //toggle/flip the boolean in the array
-    myLibrary[index].read = !myLibrary[index].read;
-
-    const toggleToUpdate = cardToUpdate.querySelector('.readOrNot');
-    toggleToUpdate.textContent = myLibrary[index].read ? "Read" : "Not Read";
-}
+// Initialize the application
+const library = new Library();
+const ui = new LibraryUI(library);
+ui.addInitialBooks();
